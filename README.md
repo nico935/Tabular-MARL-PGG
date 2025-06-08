@@ -1,6 +1,6 @@
 # Tabular Q-Learning Public Goods Game
 
-Simple, clean implementation of tabular Q-learning agents in a Public Goods Game.
+Simple implementation of tabular Q-learning agents in a Public Goods Game.
 
 ## Quick Start
 
@@ -24,13 +24,6 @@ Simple, clean implementation of tabular Q-learning agents in a Public Goods Game
    python main.py
    ```
 
-## Key Parameters
-
-- **`PGG_MULTIPLIER`**: >2.0 encourages cooperation, <1.5 discourages
-- **`INITIAL_ENDOWMENT`**: Starting money for each agent  
-- **`N_AGENTS`**: Number of players
-- **`N_EPISODES`**: Training episodes
-
 ## Files
 
 - `config.py` - **Main configuration** (edit this to change experiments)
@@ -39,19 +32,3 @@ Simple, clean implementation of tabular Q-learning agents in a Public Goods Game
 - `agent.py` - Tabular Q-learning agent
 - `requirements.txt` - Dependencies (numpy, matplotlib)
 
-## Quick Experiments
-
-Edit `config.py` and uncomment presets:
-
-```python
-# High cooperation
-PGG_MULTIPLIER = 2.5
-
-# Low cooperation  
-PGG_MULTIPLIER = 1.2
-
-# Large group
-N_AGENTS = 8
-```
-
-That's it! Simple and DRY.
