@@ -13,10 +13,10 @@ Implementation of tabular Q-learning agents in a Public Goods Game.
 
 2. **Configure experiment** in `config.py`:
    ```python
-   PGG_MULTIPLIER = 1.6    
-   INITIAL_ENDOWMENT = 10.0  
+   PGG_MULTIPLIER = 1.6  #[1,n_agents] is mixed motive, [0,1] competitive, [n_agents,inf) cooperative   
+   INITIAL_ENDOWMENT = 1.0  
    N_AGENTS = 4
-   N_EPISODES = 2000
+   N_EPISODES = 160000
    ```
 
 3. **Run experiment**:
