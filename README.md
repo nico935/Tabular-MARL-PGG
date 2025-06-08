@@ -13,8 +13,8 @@ Simple implementation of tabular Q-learning agents in a Public Goods Game.
 
 2. **Configure experiment** in `config.py`:
    ```python
-   PGG_MULTIPLIER = 1.6      # Key parameter!
-   INITIAL_ENDOWMENT = 10.0  # Key parameter!
+   PGG_MULTIPLIER = 1.6    
+   INITIAL_ENDOWMENT = 10.0  
    N_AGENTS = 4
    N_EPISODES = 2000
    ```
@@ -30,5 +30,5 @@ Simple implementation of tabular Q-learning agents in a Public Goods Game.
 - `main.py` - Training and evaluation script
 - `environment.py` - Discrete PGG environment
 - `agent.py` - Tabular Q-learning agent
-- `requirements.txt` - Dependencies (numpy, matplotlib)
+- `requirements.txt` - Dependencies
 
