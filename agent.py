@@ -140,11 +140,6 @@ class TabularQLearningAgent:
             self.total_reward += final_reward
             
         self.episode_count += 1
-        
-        # Decay epsilon
-        if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay
-            self.epsilon = max(self.epsilon, self.epsilon_min)
     
     def get_average_reward(self) -> float:
         """Get average reward per episode."""
