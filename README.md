@@ -1,6 +1,6 @@
 # Tabular Q-Learning Public Goods Game
 
-Simple implementation of tabular Q-learning agents in a Public Goods Game.
+Implementation of tabular Q-learning agents in a Public Goods Game.
 
 ## Quick Start
 
@@ -26,9 +26,9 @@ Simple implementation of tabular Q-learning agents in a Public Goods Game.
 
 ## Files
 
-- `config.py` - **Main configuration** (edit this to change experiments)
+- `config.py` - Main configuration (edit this to change experiments)
 - `main.py` - Training and evaluation script
-- `environment.py` - Discrete PGG environment
-- `agent.py` - Tabular Q-learning agent
+- `environment.py` - PGG environment
+- `agent.py` -  Q-learning agent
 - `requirements.txt` - Dependencies
 
