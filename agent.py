@@ -46,12 +46,8 @@ class TabularQLearningAgent:
         self.total_reward = 0.0
         self.episode_count = 0
         self.step_count = 0
-        
-        # Store last state-action for learning
-        self.last_state = None
-        self.last_action = None
     
-    def select_action(self, state: int, training: bool = True) -> int:
+    def select_action(self, state: int) -> int:
         """
         Select an action using epsilon-greedy policy.
         
@@ -62,7 +58,7 @@ class TabularQLearningAgent:
         Returns:
             Selected action
         """
-        if training and np.random.random() < self.epsilon:
+        if np.random.random() < self.epsilon:
             # Explore: random action
             action = np.random.randint(0, self.action_space_size)
         else:
@@ -101,39 +97,37 @@ class TabularQLearningAgent:
             self.epsilon *= self.epsilon_decay
             self.epsilon = max(self.epsilon, self.epsilon_min)
     
-    def act_and_learn(self, observation: int, reward: float = None, done: bool = False, training: bool = True) -> int:
+    def act(self, observation: int) -> int:
         """
-        Select action and learn from previous experience.
+        Select an action for the current observation.
         
         Args:
             observation: Current observation
-            reward: Reward from previous action (None for first step)
-            done: Whether episode is done
             training: Whether agent is in training mode
             
         Returns:
             Selected action
         """
-        # Learn from previous experience
-        if training and self.last_state is not None and reward is not None:
-            self.update_q_table(self.last_state, self.last_action, reward, observation, done)
+        action = self.select_action(observation)
         
-        # Select action for current state
-        if not done:
-            action = self.select_action(observation, training)
-            
-            # Store for next learning step
-            if training:
-                self.last_state = observation
-                self.last_action = action
-        else:
-            action = None
-            
-        # Update statistics
-        if reward is not None:
-            self.total_reward += reward
-            
         return action
+    
+    def learn(self, state: int, action: int, reward: float, next_observation: int, done: bool):
+        """
+        Learn from the previous experience.
+        
+        Args:
+            state: State from which the action was taken
+            action: Action taken
+            reward: Reward received for the action
+            next_observation: Next state observation
+            done: Whether episode is done
+        """
+        # Learn from previous experience
+        self.update_q_table(state, action, reward, next_observation, done)
+        
+        # Update statistics
+        self.total_reward += reward
     
     def end_episode(self, final_reward: float = None):
         """
@@ -151,16 +145,12 @@ class TabularQLearningAgent:
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
             self.epsilon = max(self.epsilon, self.epsilon_min)
-        
-        # Reset for next episode
-        self.last_state = None
-        self.last_action = None
     
     def get_average_reward(self) -> float:
         """Get average reward per episode."""
         if self.episode_count == 0:
             return 0.0
-        return self.total_reward / self.episode_count
+        return self.total_reward / self.step_count
     
     def get_stats(self) -> Dict[str, float]:
         """Get agent statistics."""
@@ -209,5 +199,3 @@ class TabularQLearningAgent:
         self.total_reward = 0.0
         self.episode_count = 0
         self.step_count = 0
-        self.last_state = None
-        self.last_action = None

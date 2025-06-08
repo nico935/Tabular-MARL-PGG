@@ -51,17 +51,18 @@ class TabularPublicGoodsGame:
         self.current_round = 0
         self.history.clear()
         
-        # Initialize history with zeros
+        # Initialize history with random binary values (0s and 1s)
         for _ in range(self.n_history):
-            self.history.append(np.zeros(self.n_agents, dtype=int))
+            random_contributions = np.random.randint(0, 2, size=self.n_agents, dtype=int)
+            self.history.append(random_contributions)
         
         self.total_payoffs = {agent: 0.0 for agent in self.agents}
         
         # Return initial observations
         observations = {}
+        observation = self._get_observation()
         for agent in self.agents:
-            observations[agent] = self._get_observation()
-            
+            observations[agent] = observation
         return observations
     
     def _get_observation(self) -> int:
@@ -72,7 +73,6 @@ class TabularPublicGoodsGame:
             An integer representing the state based on past contribution history
         """
         # Flatten the contribution history into a single state index
-        # Each position represents: round_0_agent_0, round_0_agent_1, ..., round_1_agent_0, etc.
         state_components = []
         for round_contributions in self.history:
             for agent_contrib in round_contributions:
@@ -99,13 +99,8 @@ class TabularPublicGoodsGame:
             # Episode is already done
             return {}, {}, {}, {}, {}
         
-        # Extract binary actions and ensure they're valid (0 or 1)
-        contributions = np.zeros(self.n_agents, dtype=int)
-        for i, agent in enumerate(self.agents):
-            action = actions.get(agent, 0)
-            # Convert to binary: 0 = don't contribute, 1 = contribute
-            binary_action = 1 if action > 0 else 0
-            contributions[i] = binary_action
+        # Extract binary actions (already 0 or 1)
+        contributions = np.array([actions.get(agent, 0) for agent in self.agents], dtype=int)
         
         # Add current contributions to history
         self.history.append(contributions.copy())
@@ -125,9 +120,9 @@ class TabularPublicGoodsGame:
             self.total_payoffs[agent] += agent_reward
         
         # Get next observations
-        observations = {}
-        for agent in self.agents:
-            observations[agent] = self._get_observation()
+        # Since the observation is the same for all agents, compute once and reuse
+        observation = self._get_observation()
+        observations = {agent: observation for agent in self.agents}
         
         # Check if episode is done
         self.current_round += 1
@@ -139,12 +134,8 @@ class TabularPublicGoodsGame:
         # Info
         info = {
             agent: {
-                "binary_action": contributions[i],
                 "actual_contribution": actual_contributions[i],
                 "total_contribution": total_contribution,
-                "public_pool": public_pool,
-                "equal_share": equal_share,
-                "total_payoff": self.total_payoffs[agent]
             } for i, agent in enumerate(self.agents)
         }
         
