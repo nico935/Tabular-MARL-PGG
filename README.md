@@ -1,7 +1,4 @@
 # Tabular Q-Learning Public Goods Game
-
-Simple implementation of tabular Q-learning agents in a Public Goods Game.
-
 ## Summary
 N_AGENTS play the PGG for N_ROUNDS repeatedly. After each round they update their Q-table. The state consists of the actions of all the agents in the past N_HISTORY rounds, i.e., if history is 2, all agents see the actions of the previous two rounds as the state. 
 
