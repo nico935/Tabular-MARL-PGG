@@ -180,8 +180,9 @@ def create_training_plots(round_contributions: Dict[str, List],
 
     # Calculate and plot Epsilon Decay using centralized function
     epsilon_values = []
+    epsilon_val=epsilon
     for round_num in range(1, round_counter + 1):
-        epsilon_val = calculate_epsilon(epsilon, epsilon_decay, epsilon_min)
+        epsilon_val = calculate_epsilon(epsilon_val, epsilon_decay, epsilon_min)
         epsilon_values.append(epsilon_val)
     
     ax2.plot(range(1, len(epsilon_values) + 1), epsilon_values, 'red', 
