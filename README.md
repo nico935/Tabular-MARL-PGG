@@ -6,7 +6,7 @@ Simple implementation of tabular Q-learning agents in a Public Goods Game.
 
 1. **Set up virtual environment**:
    ```bash
-   python3 -m venv venv
+   python -m venv venv
    source venv/bin/activate
    pip install -r requirements.txt
    ```
