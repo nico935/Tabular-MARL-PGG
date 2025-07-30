@@ -1,7 +1,20 @@
 import numpy as np
 from typing import Dict, Tuple
-import pickle
-import os
+
+def calculate_epsilon(initial_epsilon: float, decay_rate: float, step: int, min_epsilon: float) -> float:
+    """
+    Calculate epsilon value for given step using exponential decay.
+    
+    Args:
+        initial_epsilon: Initial epsilon value
+        decay_rate: Decay rate per step
+        step: Current step number
+        min_epsilon: Minimum epsilon value
+        
+    Returns:
+        Current epsilon value
+    """
+    return max(min_epsilon, initial_epsilon * (decay_rate ** step))
 
 class TabularQLearningAgent:
     """
@@ -43,7 +56,6 @@ class TabularQLearningAgent:
         self.q_table = np.zeros((observation_space_size, action_space_size))
         
         # Track learning statistics
-        self.total_reward = 0.0
         self.episode_count = 0
         self.step_count = 0
     
@@ -53,7 +65,6 @@ class TabularQLearningAgent:
         
         Args:
             state: Current state observation
-            training: Whether agent is in training mode
             
         Returns:
             Selected action
@@ -92,25 +103,12 @@ class TabularQLearningAgent:
         
         self.step_count += 1
         
-        # Decay epsilon after each learning step (for continuous learning without resets)
+        # Decay epsilon after each learning step
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
             self.epsilon = max(self.epsilon, self.epsilon_min)
     
-    def act(self, observation: int) -> int:
-        """
-        Select an action for the current observation.
-        
-        Args:
-            observation: Current observation
-            training: Whether agent is in training mode
-            
-        Returns:
-            Selected action
-        """
-        action = self.select_action(observation)
-        
-        return action
+
     
     def learn(self, state: int, action: int, reward: float, next_observation: int, done: bool):
         """
@@ -125,72 +123,17 @@ class TabularQLearningAgent:
         """
         # Learn from previous experience
         self.update_q_table(state, action, reward, next_observation, done)
-        
-        # Update statistics
-        self.total_reward += reward
     
-    def end_episode(self, final_reward: float = None):
+    def end_episode(self):
         """
         Handle end of episode cleanup and statistics.
-        
-        Args:
-            final_reward: Final reward of the episode
         """
-        if final_reward is not None:
-            self.total_reward += final_reward
-            
         self.episode_count += 1
-    
-    def get_average_reward(self) -> float:
-        """Get average reward per episode."""
-        if self.episode_count == 0:
-            return 0.0
-        return self.total_reward / self.step_count
     
     def get_stats(self) -> Dict[str, float]:
         """Get agent statistics."""
         return {
-            "total_reward": self.total_reward,
-            "average_reward": self.get_average_reward(),
             "episode_count": self.episode_count,
             "step_count": self.step_count,
             "epsilon": self.epsilon
         }
-    
-    def save_q_table(self, filepath: str):
-        """Save Q-table to file."""
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
-        data = {
-            "q_table": self.q_table,
-            "agent_id": self.agent_id,
-            "stats": self.get_stats(),
-            "hyperparameters": {
-                "learning_rate": self.learning_rate,
-                "discount_factor": self.discount_factor,
-                "epsilon": self.epsilon,
-                "epsilon_decay": self.epsilon_decay,
-                "epsilon_min": self.epsilon_min
-            }
-        }
-        with open(filepath, 'wb') as f:
-            pickle.dump(data, f)
-    
-    def load_q_table(self, filepath: str):
-        """Load Q-table from file."""
-        with open(filepath, 'rb') as f:
-            data = pickle.load(f)
-        
-        self.q_table = data["q_table"]
-        # Optionally restore other attributes
-        if "stats" in data:
-            stats = data["stats"]
-            self.total_reward = stats.get("total_reward", 0.0)
-            self.episode_count = stats.get("episode_count", 0)
-            self.step_count = stats.get("step_count", 0)
-            self.epsilon = stats.get("epsilon", self.epsilon)
-    
-    def reset_stats(self):
-        """Reset learning statistics."""
-        self.total_reward = 0.0
-        self.episode_count = 0
-        self.step_count = 0

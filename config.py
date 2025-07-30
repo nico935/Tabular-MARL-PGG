@@ -14,14 +14,8 @@ EPSILON_MIN = 0.01
 
 # Training Parameters
 N_EPISODES = 1                # Number of episodes to run
-PRINT_EVERY = 100             # Print progress every N rounds
+PRINT_EVERY = 1000             # Print progress every N rounds
 MOVING_AVERAGE_WINDOW = 100   # Window size for moving average plots
-
-# Multi-seed experiment parameters
-NUM_SEEDS = 10                 # Number of different random seeds to run
-
-# Multiplier comparison parameters
-MULTIPLIERS = [0.5, 1.5, 2.5, 3.5]  # List of multipliers to compare
 
 
 
