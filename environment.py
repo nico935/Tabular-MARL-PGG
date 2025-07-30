@@ -24,7 +24,7 @@ class TabularPublicGoodsGame(ParallelEnv):
                  initial_endowment: float = 10.0,
                  render_mode: Optional[str] = None):
         """
-        Initialize the Tabular Public Goods Game with binary actions.
+        Initialize the Tabular Public Goods Game environment.
         
         Args:
             n_agents: Number of agents in the game
@@ -43,7 +43,7 @@ class TabularPublicGoodsGame(ParallelEnv):
         self.initial_endowment = initial_endowment
         self.render_mode = render_mode
         
-        # PettingZoo required attributes
+        # Define agents as PettingZoo requires
         self.possible_agents = [f"agent_{i}" for i in range(n_agents)]
         self.agents = self.possible_agents[:]
         
@@ -51,7 +51,7 @@ class TabularPublicGoodsGame(ParallelEnv):
         self._action_space = spaces.Discrete(2)
         
         # Observation space: binary contribution history
-        # State is contribution history: n_history rounds of n_agents binary contributions
+        # State is contribution history: n_history rounds of n_agents contributions
         # Each contribution is 0 or 1, so state space = 2^(n_history * n_agents)
         self._observation_space = spaces.Discrete(2 ** (n_history * n_agents))
         
@@ -145,7 +145,7 @@ class TabularPublicGoodsGame(ParallelEnv):
         # Add current contributions to history
         self.history.append(contributions.copy())
         
-        # Calculate actual contribution amounts (full endowment or nothing)
+        # Calculate actual contribution amounts (full endowment or zero)
         actual_contributions = contributions * self.initial_endowment
         total_contribution = np.sum(actual_contributions)
         public_pool = total_contribution * self.pgg_multiplier

@@ -7,7 +7,7 @@ from agent import calculate_epsilon
 
 
 def _calculate_moving_average(data, window_size):
-    """Calculate moving average. Returns convolved data or empty array if too short."""
+    """Calculate moving average."""
     if len(data) < window_size:
         return np.array([])
     return np.convolve(data, np.ones(window_size)/window_size, mode='valid')
@@ -100,11 +100,11 @@ def create_training_plots(round_contributions: Dict[str, List],
                          config_params: Dict,
                          save_path: str = 'results/training_results.png'):
     """
-    Create comprehensive training plots.
+    Create training plots.
     
     Args:
         round_contributions: Dictionary of agent contributions per round
-        round_agent_rewards: Dictionary of agent rewards per round  
+        round_agent_rewards: Dictionary of agent rewards per round
         round_cooperation_rates: List of cooperation rates per round
         round_counter: Total number of rounds
         agents: Dictionary of agents
