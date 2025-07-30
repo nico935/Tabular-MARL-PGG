@@ -106,7 +106,7 @@ def main():
         
         # End episode for all agents
         for agent in agents.values():
-            agent.end_episode()
+            agent.increment_episode()
     
     print("\nTraining completed!")
     
@@ -134,16 +134,8 @@ def main():
     print("FINAL RESULTS")
     print("=" * 60)
     print(f"Total Rounds: {round_counter}")
-    print(f"Final Overall Cooperation Rate: {round_cooperation_rates[-1]:.2%}")
     
     # Agent statistics
-    print("\nAgent Statistics:")
-    for agent_id, agent in agents.items():
-        contributions = round_contributions[agent_id]
-        recent_contrib = np.mean(contributions[-min(100, len(contributions)):]) if contributions else 0
-        stats = agent.get_stats()
-        print(f"  {agent_id}: Recent Avg Contribution: {recent_contrib:.2f}, "
-              f"Steps: {stats['step_count']}, Epsilon: {stats['epsilon']:.3f}")
 
 if __name__ == "__main__":
     main()

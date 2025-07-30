@@ -1,20 +1,19 @@
 import numpy as np
 from typing import Dict, Tuple
 
-def calculate_epsilon(initial_epsilon: float, decay_rate: float, step: int, min_epsilon: float) -> float:
+def calculate_epsilon(epsilon: float, decay_rate: float, min_epsilon: float) -> float:
     """
     Calculate epsilon value for given step using exponential decay.
     
     Args:
-        initial_epsilon: Initial epsilon value
+        epsilon: Current epsilon value
         decay_rate: Decay rate per step
-        step: Current step number
         min_epsilon: Minimum epsilon value
         
     Returns:
         Current epsilon value
     """
-    return max(min_epsilon, initial_epsilon * (decay_rate ** step))
+    return max(min_epsilon, epsilon * decay_rate)
 
 class TabularQLearningAgent:
     """
@@ -90,7 +89,7 @@ class TabularQLearningAgent:
             done: Whether episode is done
         """
         current_q = self.q_table[state, action]
-        
+
         # Q-learning update rule
         if done:
             target_q = reward
@@ -105,8 +104,7 @@ class TabularQLearningAgent:
         
         # Decay epsilon after each learning step
         if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay
-            self.epsilon = max(self.epsilon, self.epsilon_min)
+            self.epsilon = calculate_epsilon(self.epsilon, self.epsilon_decay,  self.epsilon_min)
     
 
     
@@ -124,16 +122,9 @@ class TabularQLearningAgent:
         # Learn from previous experience
         self.update_q_table(state, action, reward, next_observation, done)
     
-    def end_episode(self):
+    def increment_episode(self):
         """
-        Handle end of episode cleanup and statistics.
+        Increment episode count.
         """
         self.episode_count += 1
-    
-    def get_stats(self) -> Dict[str, float]:
-        """Get agent statistics."""
-        return {
-            "episode_count": self.episode_count,
-            "step_count": self.step_count,
-            "epsilon": self.epsilon
-        }
+

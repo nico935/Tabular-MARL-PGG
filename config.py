@@ -2,7 +2,7 @@
 N_AGENTS = 3
 N_ROUNDS = 160000
 N_HISTORY = 1
-PGG_MULTIPLIER =1.7           
+PGG_MULTIPLIER =1.6           
 INITIAL_ENDOWMENT = 1       
 
 # Learning Parameters
@@ -14,7 +14,7 @@ EPSILON_MIN = 0.01
 
 # Training Parameters
 N_EPISODES = 1                # Number of episodes to run
-PRINT_EVERY = 1000             # Print progress every N rounds
+PRINT_EVERY = 10000             # Print progress every N rounds
 MOVING_AVERAGE_WINDOW = 100   # Window size for moving average plots
 
 

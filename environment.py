@@ -8,8 +8,8 @@ from gymnasium import spaces
 class TabularPublicGoodsGame(ParallelEnv):
     """
     Public Goods Game environment for tabular Q-learning.
-    
-    Each agent can either contribute (1) or not contribute (0) a fixed amount.
+
+    Each agent can either contribute (1) or not contribute (0) a their endowment.
     The observation space is the history of past round contributions of all agents.
 
     """
