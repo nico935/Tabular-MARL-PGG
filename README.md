@@ -2,8 +2,10 @@
 
 Simple implementation of tabular Q-learning agents in a Public Goods Game.
 
-## Quick Start
+## Summary
+N_AGENTS play the PGG for N_ROUNDS repeatedly. After each round they update their Q-table. The state consists of the actions of all the agents in the past N_HISTORY rounds, i.e., if history is 2, all agents see the actions of the previous two rounds as the state. 
 
+## Quick Start
 1. **Set up virtual environment**:
    ```bash
    python -m venv venv
@@ -26,8 +28,6 @@ Simple implementation of tabular Q-learning agents in a Public Goods Game.
    ```bash
    python main.py
    ```
-## Summary
-N_AGENTS play the PGG for N_ROUNDS repeatedly. After each round they update their Q-table. The state consists of the actions of all the agents in the past N_HISTORY rounds, i.e., if history is 2, all agents see the actions of the previous two rounds as the state. 
 ## Files
 
 - `config.py` - Main configuration (edit this to change experiments)
