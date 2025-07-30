@@ -84,7 +84,7 @@ def main():
                     agents[agent_id].learn(current_obs, action, reward, next_obs, done_agent)
                     cum_rewards[agent_id] += reward
 
-            # Track overall cooperation rate - calculate directly from actions
+            # Track average cooperation rate 
             total_contribution = sum(actions.values())
             max_possible = len(actions)  # Since actions are 0 or 1
             cooperation_rate = total_contribution / max_possible if max_possible > 0 else 0

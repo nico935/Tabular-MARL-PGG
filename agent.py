@@ -89,9 +89,9 @@ class TabularQLearningAgent:
             next_state: Next state
             done: Whether episode is done
         """
-        # Q-learning update rule
         current_q = self.q_table[state, action]
         
+        # Q-learning update rule
         if done:
             target_q = reward
         else:

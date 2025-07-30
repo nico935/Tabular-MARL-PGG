@@ -138,7 +138,7 @@ class TabularPublicGoodsGame(ParallelEnv):
             # Episode is already done - return empty dicts for terminated environment
             return {}, {}, {}, {}, {}
         
-        # Extract binary actions (already 0 or 1) only for active agents
+        # Extract actions for active agents
         active_agents = self.agents[:]
         contributions = np.array([actions.get(agent, 0) for agent in active_agents], dtype=int)
         
@@ -167,13 +167,12 @@ class TabularPublicGoodsGame(ParallelEnv):
         self.current_round += 1
         done = self.current_round >= self.n_rounds
         
-        # Remove agents when episode ends (PettingZoo convention)
+        # Remove agents when episode ends
         if done:
             self.agents = []
             
         terminations = {agent: done for agent in active_agents}
-        truncations = {agent: False for agent in active_agents}  # No truncation in this environment
-        
+        truncations = {agent: done for agent in active_agents}  
         # Info for active agents
         infos = {
             agent: {
